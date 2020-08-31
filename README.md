@@ -1,6 +1,8 @@
 A parallel algorithm that calculates the similarity of the words by using MPI environment.
 
-To compile and execute the program, MPI environment should be installed. The program could be compiled by the following command:
+To compile and execute the program, MPI environment should be installed. 
+
+The program could be compiled by the following command:
 
 `mpicc <project_name>.c −o <object_file_name>.o` 
 
