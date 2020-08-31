@@ -1,10 +1,3 @@
-/* Student Name: Zeynep Işık
-*  Student Number: 2013400078
-*  Compiling Status: Compiling
-*  Working Status: Working
-*/
-
-
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +44,7 @@ void runMasterNode(int rank, int wordCountPerProcess, int numOfProcessor){
 
   // First *for* traverse the slave nodes, Second *fors*  reads each line of the file and puts words and their corresponding embedding matrices into appropriate array defined above
   // Then send the words and their embedding matrices to slaves 
-  // File is read partially. Requirement1 is done. 
+  // File is read partially.
   for(int slaveRank = 1; slaveRank <= numOfProcessor-1; slaveRank++){
     for(int i = 0; i< wordCountPerProcess; i++){
       fgets(line, MAX_LINE_LEN, file);
@@ -115,7 +108,7 @@ void runMasterNode(int rank, int wordCountPerProcess, int numOfProcessor){
        MPI_Finalize();
        exit(0);
 
-      // Requirement 2, COMMAND_EXIT part is done.
+      
     }
   
     // If query word is not equal to EXIT, proceeds the query word
@@ -174,7 +167,6 @@ void runMasterNode(int rank, int wordCountPerProcess, int numOfProcessor){
       if(targetProcID <= 0 ){
         printf("Query word was not found.\n");
       }
-      // Requirement 2, COMMAND_QUERY part is done.
 
 
       // The case that query word is found in one of the slaves (the rank of that slave is targetProcID)
@@ -213,7 +205,6 @@ void runMasterNode(int rank, int wordCountPerProcess, int numOfProcessor){
          
         }
       
-        // Requirement 2, COMMAND_CALCULATE_SIMILARITY part is done
         char* similarWordArr  = (char*)malloc(sizeof(char) * (numOfProcessor-1)*MAX_WORD_LEN); // Keeps most similar words that will be received from slaves
         float* similarityScoreArr = (float*)malloc(sizeof(float)* numOfProcessor-1); // Keeps similarities that will be received from slaves
        
@@ -260,7 +251,6 @@ void runSlaveNode(int rank, int wordCountPerProcess){
 
   float* embeddings_matrix = (float*)malloc(sizeof(float) * wordCountPerProcess*EMBEDDING_DIMENSION); // array that will keep the embedding matrices that is sent by master
   MPI_Recv(embeddings_matrix, wordCountPerProcess*EMBEDDING_DIMENSION, MPI_FLOAT, 0, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE); // Receives the embedding matrices from master
-  // ***************************** Requirement 1 is done
 
   while(1==1){
   
@@ -281,7 +271,6 @@ void runSlaveNode(int rank, int wordCountPerProcess){
       MPI_Finalize();
       exit(0);
     }
-    // ************************** Requirement2, COMMAND_EXIT part is done.
 
 
     // If command is COMMAND_QUERY, receives queryword from master and does some calculation
@@ -322,7 +311,6 @@ void runSlaveNode(int rank, int wordCountPerProcess){
 
     }  
 
-      // ************************** Requirement2, COMMAND_QUERY part is done.
 
     // If command is COMMAND_CALCULATE_SIMILARITY, receives query embeddings from master and does some calculation
     else if(command == COMMAND_CALCULATE_SIMILARITY){
@@ -380,7 +368,6 @@ void runSlaveNode(int rank, int wordCountPerProcess){
                     /* tag          = */ 0, 
                     /* communicator = */ MPI_COMM_WORLD);
       
-    // ************************** Requirement2, COMMAND_CALCULATE_SIMILARITY part is done.
     }
 
   }
